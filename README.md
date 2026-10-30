@@ -1,6 +1,6 @@
 # Personal portfolio
 
-My homepage at [anikethmalipeddi.vercel.app](https://anikethmalipeddi.vercel.app), with a small pathfinding experiment built in JavaScript and WebGL. Canvas provides a fallback when WebGL is unavailable.
+My homepage at [anikethmalipeddi.com](https://anikethmalipeddi.com), with a small pathfinding experiment built in JavaScript and WebGL. Canvas provides a fallback when WebGL is unavailable.
 
 ## Preview
 
