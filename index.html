@@ -122,12 +122,12 @@ body{font-family:'Newsreader',Georgia,serif}
 @media(max-width:1100px){.page{display:block;min-height:0}}
 
 /* One quiet reset control, with options appearing only on demand. */
-.controls{position:relative}.reset-menu{position:relative}
+.controls{position:relative}.reset-group{display:inline-flex;align-items:stretch}.reset-menu{position:relative}.reset-main{border-right:0;border-radius:2px 0 0 2px}.reset-trigger{height:100%;border-radius:0 2px 2px 0}
 .reset-trigger{display:inline-flex;align-items:center;gap:15px;list-style:none;white-space:nowrap;user-select:none}
 .reset-trigger::-webkit-details-marker{display:none}
 .reset-trigger span{font-size:11px;color:#8e8a80;transition:transform .18s}
 .reset-menu[open] .reset-trigger span{transform:rotate(180deg)}
-.reset-options{position:absolute;bottom:calc(100% + 8px);left:0;width:176px;z-index:12;display:flex;flex-direction:column;padding:5px;border:1px solid #cfcabf;background:#f5f2eb;box-shadow:0 9px 25px rgba(38,41,34,.12)}
+.reset-options{position:absolute;bottom:calc(100% + 8px);right:0;width:176px;z-index:12;display:flex;flex-direction:column;padding:5px;border:1px solid #cfcabf;background:#f5f2eb;box-shadow:0 9px 25px rgba(38,41,34,.12)}
 .reset-options button{font:11px 'DM Mono',ui-monospace,monospace;color:#4d5149;border:0;border-radius:2px;text-align:left;background:transparent;cursor:pointer;padding:10px 11px;white-space:nowrap}
 .reset-options button:hover,.reset-options button:focus-visible{background:#e5e2d9;outline:none}
 @media(max-width:650px){.reset-options{bottom:calc(100% + 6px)}}
@@ -144,12 +144,12 @@ a:focus-visible,summary:focus-visible,.stage:focus-visible{outline:2px solid #44
 <p>i like building software, whether it's something useful or just an idea i wanted to try.</p>
 <p>my interests include software, embedded systems, ai, robotics, and deep tech.</p>
 <p>outside of that, i enjoy rock climbing, flying gliders, and catan.</p>
-<p>try the little pathfinding experiment i built here!</p>
+<p>i built a little pathfinding experiment. give it a try!</p>
 <div class="social mono" id="contact"><a href="https://github.com/anikethmalipeddi" target="_blank" rel="noopener noreferrer">github</a><a href="https://www.linkedin.com/in/anikethmalipeddi/" target="_blank" rel="noopener noreferrer">linkedin</a><a href="mailto:aniketh.malipeddi@gmail.com">email</a></div>
 </section>
 <section class="lab" id="experiment" aria-label="Pathfinding experiment"><div class="panel">
 <div class="stage" id="stage" tabindex="0" role="group" aria-label="Pathfinding scene" aria-describedby="experimentHelp"><canvas id="render" aria-hidden="true"></canvas><canvas id="trails" aria-hidden="true"></canvas><canvas id="overlay" role="img" aria-label="Interactive path planning scene with two draggable endpoints and movable 3D objects. Press Race them to compare four algorithms."></canvas><div class="hint mono">drag dots or objects · press race to compare</div><div class="liveleader" id="floatingLead" hidden>searching…</div></div>
-<div class="panelbottom"><div class="controls"><button id="run" class="control primary" type="button">▶ race them</button><details class="reset-menu" id="resetMenu"><summary class="control reset-trigger">↺ reset <span aria-hidden="true">⌄</span></summary><div class="reset-options" role="group" aria-label="Reset options"><button type="button" data-reset="race">clear race</button><button type="button" data-reset="objects">reset objects</button><button type="button" data-reset="endpoints">reset dots</button><button type="button" data-reset="all">reset everything</button></div></details></div><div class="stats mono" id="raceStateWrap" hidden><span id="state" aria-live="polite"></span></div></div>
+<div class="panelbottom"><div class="controls"><button id="run" class="control primary" type="button">▶ race them</button><div class="reset-group" id="resetGroup"><button class="control reset-main" type="button" data-reset="all">↺ reset</button><details class="reset-menu" id="resetMenu"><summary class="control reset-trigger" aria-label="Reset options"><span aria-hidden="true">⌄</span></summary><div class="reset-options" role="group" aria-label="Reset options"><button type="button" data-reset="race">clear race</button><button type="button" data-reset="objects">reset objects</button><button type="button" data-reset="endpoints">reset dots</button><button type="button" data-reset="all">reset everything</button></div></details></div></div><div class="stats mono" id="raceStateWrap" hidden><span id="state" aria-live="polite"></span></div></div>
 <div class="raceboard" id="raceboard" aria-label="Algorithm race results" hidden>
 <div class="race-lead" id="raceLead" aria-live="polite"><span id="leadText">Waiting for a completed route…</span><span class="time" id="raceClock">00:00</span></div>
 <div class="racer" id="score-astar" style="--color:#547c65"><span class="swatch"></span><span><strong>A*</strong><span class="measure">waiting</span></span></div>
@@ -607,7 +607,7 @@ stage.addEventListener('pointermove',onPointerMove);
 stage.addEventListener('pointerup',onPointerUp);
 stage.addEventListener('pointercancel',onPointerUp);
 const resetMenu=document.getElementById('resetMenu');
-resetMenu.addEventListener('click',e=>{
+document.getElementById('resetGroup').addEventListener('click',e=>{
  const btn=e.target.closest('[data-reset]');if(!btn)return;
  const option=btn.dataset.reset;
  if(option==='objects'||option==='all')objects.forEach((o,i)=>Object.assign(o,originalObjects[i]));
