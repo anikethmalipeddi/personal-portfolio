@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>aniketh malipeddi — software & experiments</title>
+<meta name="description" content="Aniketh Malipeddi, computer science student at Georgia Tech. Building software and exploring embedded systems, AI, robotics, and deep tech."/>
+<meta name="theme-color" content="#edeae2"/>
+<meta property="og:title" content="aniketh malipeddi — software & experiments"/>
+<meta property="og:description" content="Computer science at Georgia Tech. Software, embedded systems, AI, robotics, and an interactive pathfinding experiment."/>
+<meta property="og:type" content="website"/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" media="print" onload="this.media='all'" onerror="this.remove()">
+<style>
+
+:root{--paper:#edeae2;--ink:#282927;--muted:#8f8b81;--line:#d4d0c7;--green:#527960;--plum:#777497;--accent:#546f5b}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--paper);font-family:Georgia,serif;-webkit-font-smoothing:antialiased}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.09;z-index:5;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E")}a{color:inherit;text-decoration:none}.mono{font-family:'DM Mono',ui-monospace,monospace}.page{max-width:1520px;margin:auto;padding:44px clamp(24px,5.1vw,88px) 33px}.top{display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:11px;letter-spacing:.04em;color:#696a63}.top strong{color:#343630;font-weight:500}.top nav{display:flex;gap:34px}.top a{transition:color .2s}.top a:hover,.top a.active{color:var(--green)}.top .active:before{content:'●';font-size:8px;margin-right:8px;color:var(--green)}.eyebrow{font-size:10px;color:#918d84;letter-spacing:.13em;text-transform:uppercase}.hero{display:grid;grid-template-columns:minmax(330px,.79fr) minmax(540px,1.22fr);gap:clamp(42px,5.6vw,100px);align-items:center;min-height:min(810px,calc(100vh - 160px));padding:57px 0 53px}.intro{max-width:530px}.intro .eyebrow{display:flex;align-items:center;gap:16px}.intro .eyebrow:after{content:'';height:1px;background:var(--line);flex:0 1 88px}.name{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-size:clamp(90px,9.2vw,154px);letter-spacing:-.062em;line-height:.94;font-weight:400;margin:28px 0 25px}.tagline{font-style:italic;color:#8c887d;font-size:clamp(19px,1.7vw,25px);line-height:1.36;margin:0 0 34px}.intro p{font-size:clamp(16px,1.29vw,19px);line-height:1.65;margin:0 0 16px;max-width:480px}.intro p.mini{font-size:16px;color:#7d7b72;line-height:1.7;margin-top:20px}.intro em{color:#54765e;font-style:normal}.work{margin-top:48px}.sectionline{display:flex;align-items:center;gap:18px;margin-bottom:17px}.sectionline:after{content:'';height:1px;background:var(--line);flex:1}.work a{display:flex;align-items:center;gap:15px;padding:13px 0;border-bottom:1px solid var(--line);font-size:14px;transition:color .2s}.work a:hover{color:var(--green)}.work .index{color:#aaa59c;width:25px;font-size:10px}.work .descriptor{margin-left:auto;color:#959087;font-family:'DM Mono',monospace;font-size:10px}.work .arrow{font-family:'DM Mono',monospace;color:#99958b;margin-left:8px}.social{display:flex;gap:24px;margin-top:31px;font-size:12px}.social a{text-decoration:underline;text-underline-offset:5px;text-decoration-color:#aca69b}.social a:hover{color:var(--green)}
+.lab{width:100%;min-width:0;position:relative}.panel{background:#f3f0e9;border:1px solid #d4d0c7;box-shadow:0 18px 48px rgba(74,67,53,.055);padding:17px 17px 0}.panelhead{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:2px 3px 15px;font-size:11px}.panelhead .left{display:flex;align-items:center;gap:11px;font-weight:500}.statusdot{width:7px;height:7px;border-radius:50%;background:#678b6a;box-shadow:0 0 0 3px #678b6a13}.panelhead .right{color:#aaa399;font-size:10px}.stage{position:relative;aspect-ratio:1.35/1;overflow:hidden;background:#d8d4ca;cursor:crosshair;touch-action:none;user-select:none}.stage canvas{display:block;position:absolute;inset:0;width:100%;height:100%}#render{z-index:1}#overlay{z-index:2}.stage .hint{position:absolute;left:17px;top:16px;z-index:3;color:#5c5b53;background:#efede6c8;backdrop-filter:blur(5px);border:1px solid #e2ded5;pointer-events:none;padding:7px 10px;font-size:10px}.stage .shadernote{position:absolute;right:12px;bottom:13px;z-index:3;color:#777a70;font:9px 'DM Mono',monospace;pointer-events:none;opacity:.75}.panelbottom{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 3px 16px;flex-wrap:wrap}.controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.control{color:#55574e;background:#eae7df;border:1px solid #cfcbc0;border-radius:2px;padding:10px 12px;font:10px 'DM Mono',monospace;cursor:pointer;transition:background .2s}.control:hover{background:#dedbd2}.control.primary{color:#f8f7f1;background:#505a4e;border-color:#505a4e}.control.primary:hover{background:#364e3a}.control:focus-visible{outline:2px solid #55795f;outline-offset:2px}select.control{appearance:none;padding-right:25px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8'%3E%3Cpath d='m1 2 4 4 4-4' fill='none' stroke='%23555850'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center}.stats{font-size:10px;color:#99958a;display:flex;gap:13px;align-items:center}.stats .ok{color:#5c8463}.labcaption{display:flex;justify-content:space-between;gap:10px;margin-top:17px;color:#7f7c72;font-size:11px;line-height:1.7}.labcaption strong{color:#44473f;font-weight:400}.live{border-top:1px solid var(--line);padding:18px 0 0;display:flex;gap:22px;justify-content:space-between;font-size:10px;color:#827f75}.live .liveleft{display:flex;align-items:center;gap:11px}.live small{font-size:10px}.live a{text-decoration:underline;text-underline-offset:3px}.live .bullet{width:6px;height:6px;border-radius:100%;background:#779a7b}.below{border-top:1px solid var(--line);display:flex;justify-content:space-between;padding:22px 0 0;color:#827e75;gap:10px}.below .mono{font-size:10px}.under{margin-top:30px;font-size:13px;color:#78756d;max-width:620px;line-height:1.75}#work,#about{scroll-margin-top:25px}
+@media(max-width:1050px){.hero{grid-template-columns:1fr;gap:30px;min-height:0;padding-top:78px}.intro{max-width:740px}.name{font-size:clamp(88px,15vw,150px)}.lab{max-width:840px}.page{padding:30px 28px}.intro p{max-width:570px}.work{margin-top:33px}}@media(max-width:650px){.page{padding:24px 17px}.top nav{gap:15px}.top nav a{font-size:10px}.hero{padding:53px 0 40px}.name{font-size:91px;margin:22px 0 25px}.tagline{font-size:21px}.intro p{font-size:17px}.panel{padding:10px 10px 0}.stage{aspect-ratio:1/1}.panelhead .right{display:none}.work .descriptor{display:none}.labcaption{flex-direction:column}.live{flex-wrap:wrap}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media(max-width:650px){.panelbottom{gap:10px}.control{padding:9px 9px}}
+
+.stage #trails{z-index:2;pointer-events:none;opacity:.82;transition:opacity .8s ease}.stage #overlay{z-index:3;pointer-events:none}.stage .hint{z-index:4}.stage .shadernote{z-index:4}
+.raceboard{border-top:1px solid var(--line);padding:10px 2px 15px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.racer{font-family:'DM Mono',monospace;font-size:10px;min-width:0;color:#6b695f;display:flex;gap:6px;align-items:flex-start;border-right:1px solid #dcd7cd;padding-right:4px}.racer:last-child{border-right:none}.racer .swatch{width:7px;height:7px;margin-top:2px;flex:none;border-radius:50%;background:var(--color)}.racer strong{display:block;font-size:11px;color:#42443d;font-weight:500;margin-bottom:5px}.racer .measure{display:block;color:#908b83;line-height:1.55;white-space:nowrap}.racer.winner strong{color:#3d654a}.racer.winner .measure{color:#3d654a}.race-status{font-size:10px;color:#7d8075;padding:0 3px 12px;min-height:25px}.race-status b{font-weight:500;color:#446d53}.labcaption{border-top:1px solid var(--line);padding-top:13px}.control:disabled{opacity:.55;cursor:default}
+@media(max-width:650px){.raceboard{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 4px}.racer:nth-child(2){border-right:0}.stage .hint{font-size:9px;left:8px;top:8px}.stage .shadernote{font-size:8px}}
+@media(prefers-reduced-motion:reduce){.stage #trails{transition:none}}
+@media(max-width:650px){.top .school{display:none}}
+/* Refined interaction: the environment is never tiled with a search grid. */
+.sectionline .eyebrow{white-space:nowrap;flex-shrink:0}
+.stage #trails{display:none!important}
+.raceboard[hidden]{display:none!important}
+.raceboard{background:#eae7df;border:1px solid #d4d0c6;margin:0 2px 12px;padding:13px 12px;gap:0;grid-template-columns:repeat(4,minmax(0,1fr));}
+.racer{padding:3px 10px 3px 11px;min-height:46px;border-right:1px solid #d1cdc2;font-size:10px;gap:8px}
+.racer:first-child{padding-left:0}.racer:last-child{border-right:0;padding-right:0}
+.racer .swatch{width:6px;height:6px;margin-top:4px}
+.racer strong{font-size:11px;margin-bottom:6px}
+.racer .measure{line-height:1.7;white-space:normal}
+.racer.winner{background:rgba(103,137,107,.09);border-radius:2px}
+.race-status{padding:1px 3px 13px;line-height:1.55;color:#73776d}
+.control.primary{min-width:106px}
+.control.primary:disabled{background:#787a70;border-color:#787a70;opacity:1}
+.panelbottom{padding:15px 3px 13px}
+.stage{cursor:grab}
+@media(max-width:650px){.raceboard{grid-template-columns:1fr 1fr;row-gap:13px;padding:12px 9px}.racer:nth-child(2){border-right:0}.racer:nth-child(3){padding-left:0}.racer .measure{font-size:9px}.panelbottom{gap:11px}.panelhead{font-size:10px}.stage .hint{max-width:calc(100% - 24px);line-height:1.5}}
+
+/* Readable algorithm race: an optional, intentionally paced visualization. */
+.control[hidden],.race-lead[hidden]{display:none!important}
+.raceboard{grid-template-rows:auto auto;row-gap:12px}
+.race-lead{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 2px 12px;border-bottom:1px solid #d1cdc2;color:#73766d;font:10px 'DM Mono',monospace;line-height:1.6}
+.race-lead strong{font-weight:500;color:#3d654a}
+.race-lead .time{color:#969083;white-space:nowrap;font-variant-numeric:tabular-nums}
+.racer.provisional strong{color:#3b6e54;text-decoration:underline;text-underline-offset:4px}
+.racer.provisional .measure{color:#527963}
+.racer .measure{font-variant-numeric:tabular-nums}
+@media(max-width:650px){.race-lead{flex-wrap:wrap;gap:3px}.race-lead .time{margin-left:auto}}
+
+.stage .liveleader{position:absolute;left:13px;bottom:12px;z-index:4;pointer-events:none;font:11px 'DM Mono',monospace;color:#465f4d;background:rgba(242,239,230,.93);border:1px solid rgba(201,204,192,.9);padding:8px 10px;box-shadow:0 3px 13px rgba(49,52,41,.055);max-width:70%}
+.stage .liveleader[hidden]{display:none!important}
+.race-lead{font-size:11px}.racer strong{font-size:12px}.racer .measure{font-size:10px}
+@media(max-width:650px){.stage .liveleader{font-size:9px;padding:6px 8px;bottom:8px;left:8px}.racer .measure{font-size:10px}}
+
+/* Simple personal homepage: editorial text and a single interactive experiment. */
+.page{max-width:1510px;padding:42px clamp(24px,6vw,104px) 54px}
+.top{justify-content:flex-end;min-height:18px;letter-spacing:0;font-size:12px}
+.top a{text-decoration:underline;text-underline-offset:4px;color:#4f524c}
+.hero{grid-template-columns:minmax(320px,.88fr) minmax(490px,1.08fr);gap:clamp(50px,6.8vw,120px);align-items:center;min-height:calc(100svh - 116px);padding:20px 0 45px}
+.intro{max-width:590px}
+.name{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-size:clamp(54px,4.4vw,72px);letter-spacing:-.051em;line-height:1;white-space:normal;font-weight:400;margin:0 0 54px;overflow-wrap:normal}
+.intro p,.intro p.mini{font-family:'Newsreader',Georgia,'Times New Roman',serif;font-size:clamp(21px,1.78vw,25px);line-height:1.48;letter-spacing:-.015em;max-width:560px;margin:0 0 27px;color:#292b29}
+.intro em{font-style:normal}.intro .inline-link{color:#44678d;text-decoration:underline;text-decoration-color:#9cacc0;text-underline-offset:3px}
+.social{margin-top:44px;display:flex;gap:28px;font-family:'DM Mono',monospace;font-size:12px}
+.social a{text-decoration:underline;text-underline-offset:5px}
+.panel{box-shadow:none;background:transparent;border:0;padding:0}
+.panelhead{padding:0 2px 13px;color:#55584e}
+.panelhead .left{font-size:11px;font-weight:400}
+.panelhead .statusdot{width:6px;height:6px}
+.stage{border:1px solid #c6c1b7}
+.stage .hint{font-size:10px}
+.panelbottom{padding:14px 0 10px}
+.race-status:empty{display:none}
+.raceboard{margin:6px 0 0}
+@media(max-width:1100px){.hero{grid-template-columns:1fr;gap:52px;min-height:auto;padding:68px 0 60px}.intro{max-width:730px}.name{font-size:clamp(55px,6vw,84px);margin-bottom:36px}.lab{max-width:820px}.intro p,.intro p.mini{font-size:clamp(22px,2.5vw,26px)}}
+@media(max-width:650px){.page{padding:23px 18px 35px}.hero{padding:43px 0 35px;gap:43px}.name{font-size:clamp(47px,9.4vw,64px);margin-bottom:32px}.intro p,.intro p.mini{font-size:21px;margin-bottom:23px;line-height:1.44}.social{margin-top:30px}.panelhead{padding-bottom:10px}.stage{aspect-ratio:1/1}}
+
+/* Final visual hierarchy: editorial headline, readable story, quiet technical labels. */
+.hero{align-items:start;min-height:0;padding-top:clamp(58px,7.5vh,82px);padding-bottom:clamp(65px,8vh,105px)}
+.intro{container-type:inline-size;max-width:590px}
+.name{font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-size:clamp(41px,15cqi,88px);line-height:.98;letter-spacing:-.051em;font-weight:400;margin:0 0 49px;overflow-wrap:normal}
+.intro p,.intro p.mini{font-family:'Newsreader',Georgia,'Times New Roman',serif;font-size:clamp(20px,1.61vw,23px);line-height:1.51;letter-spacing:-.01em;margin-bottom:26px;max-width:545px}
+.social{margin-top:40px;gap:27px;font-size:12px}
+.panelhead,.stats,.race-status{font-family:'DM Mono',monospace;font-size:11px}
+.stage .hint{font-family:'DM Mono',monospace;font-size:11px}
+.control{font-family:'DM Mono',monospace;font-size:11px}
+@media(max-width:1100px){
+ .hero{padding-top:56px;gap:49px}
+ .intro{max-width:730px}
+ .name{margin-bottom:40px}
+ .intro p,.intro p.mini{font-size:clamp(21px,2.5vw,23px)}
+}
+@media(max-width:650px){
+ .hero{padding-top:34px;padding-bottom:48px;gap:46px}
+ .name{margin-bottom:34px}
+ .intro p,.intro p.mini{font-size:20px;line-height:1.48;margin-bottom:23px}
+ .social{margin-top:30px;gap:25px}
+ .stage .hint{font-size:9px}
+ .panelhead,.stats,.race-status{font-size:10px}
+ .control{font-size:10px}
+}
+
+/* Portfolio finish: deliberate three-font hierarchy, responsive name, quiet UI. */
+@media(min-width:1101px){.hero{grid-template-columns:minmax(0,.98fr) minmax(0,1.03fr);gap:clamp(38px,4vw,66px)}}
+body{font-family:'Newsreader',Georgia,serif}
+.intro a.inline-link{white-space:nowrap}
+.name{font-size:clamp(43px,14.8cqi,92px);letter-spacing:-.053em;margin-bottom:46px;white-space:nowrap}
+.intro p,.intro p.mini{font-size:clamp(20px,1.52vw,22.5px);line-height:1.52}
+.hero{padding-top:clamp(38px,5.7vh,68px)}
+.social{font-size:12px}
+@media(max-width:1100px){.hero{padding-top:38px}.name{font-size:clamp(48px,15cqi,92px)}}
+@media(max-width:650px){.hero{padding-top:27px}.name{font-size:clamp(43px,15.6cqi,72px);margin-bottom:30px}}
+/* Center the two-column composition as a unit, not each piece separately. */
+@media(min-width:1101px){
+ /* Center the initial composition without moving everything when race results appear. */
+ .page{min-height:100svh;display:block}
+ .hero{width:100%;padding-top:max(38px,calc((100svh - clamp(500px,38vw,550px))/2 - 42px));padding-bottom:0;align-items:start}
+}
+@media(max-width:1100px){.page{display:block;min-height:0}}
+
+/* One quiet reset control, with options appearing only on demand. */
+.controls{position:relative}.reset-menu{position:relative}
+.reset-trigger{display:inline-flex;align-items:center;gap:15px;list-style:none;white-space:nowrap;user-select:none}
+.reset-trigger::-webkit-details-marker{display:none}
+.reset-trigger span{font-size:11px;color:#8e8a80;transition:transform .18s}
+.reset-menu[open] .reset-trigger span{transform:rotate(180deg)}
+.reset-options{position:absolute;bottom:calc(100% + 8px);left:0;width:176px;z-index:12;display:flex;flex-direction:column;padding:5px;border:1px solid #cfcabf;background:#f5f2eb;box-shadow:0 9px 25px rgba(38,41,34,.12)}
+.reset-options button{font:11px 'DM Mono',ui-monospace,monospace;color:#4d5149;border:0;border-radius:2px;text-align:left;background:transparent;cursor:pointer;padding:10px 11px;white-space:nowrap}
+.reset-options button:hover,.reset-options button:focus-visible{background:#e5e2d9;outline:none}
+@media(max-width:650px){.reset-options{bottom:calc(100% + 6px)}}
+.stats[hidden]{display:none!important}
+a:focus-visible,summary:focus-visible,.stage:focus-visible{outline:2px solid #446d53;outline-offset:5px}
+.experiment-help{font:11px/1.65 'DM Mono',ui-monospace,monospace;color:#65675e;margin:10px 0 0}
+@media(max-width:360px){.name{font-size:14.5cqi}.controls{gap:6px}}
+</style></head>
+<body><div class="page">
+<main class="hero" id="home"><section class="intro" id="about">
+<h1 class="name">aniketh malipeddi</h1>
+<p>i'm studying computer science at <a class="inline-link" href="https://www.gatech.edu/" target="_blank" rel="noopener">georgia tech</a>.</p>
+<p>i like building software, whether it's something useful or just an idea i wanted to try.</p>
+<p>i'm especially interested in software/embedded systems, ai, robotics, and deep tech.</p>
+<p>i built a little pathfinding experiment on the right. give it a try!</p>
+<div class="social mono" id="contact"><a href="https://github.com/anikethmalipeddi" target="_blank" rel="noopener noreferrer">github</a><a href="https://www.linkedin.com/in/anikethmalipeddi/" target="_blank" rel="noopener noreferrer">linkedin</a><a href="mailto:aniketh.malipeddi@gmail.com">email</a></div>
+</section>
+<section class="lab" id="experiment" aria-label="Pathfinding experiment"><div class="panel">
+<div class="stage" id="stage" tabindex="0" role="group" aria-label="Pathfinding scene" aria-describedby="experimentHelp"><canvas id="render" aria-hidden="true"></canvas><canvas id="trails" aria-hidden="true"></canvas><canvas id="overlay" role="img" aria-label="Interactive path planning scene with two draggable endpoints and movable 3D objects. Press Race them to compare four algorithms."></canvas><div class="hint mono">drag dots or objects · press race to compare</div><div class="liveleader" id="floatingLead" hidden>searching…</div></div>
+<div class="panelbottom"><div class="controls"><button id="run" class="control primary" type="button">▶ race them</button><details class="reset-menu" id="resetMenu"><summary class="control reset-trigger">↺ reset <span aria-hidden="true">⌄</span></summary><div class="reset-options" role="group" aria-label="Reset options"><button type="button" data-reset="race">clear race</button><button type="button" data-reset="objects">reset objects</button><button type="button" data-reset="endpoints">reset dots</button><button type="button" data-reset="all">reset everything</button></div></details></div><div class="stats mono" id="raceStateWrap" hidden><span id="state" aria-live="polite"></span></div></div>
+<div class="raceboard" id="raceboard" aria-label="Algorithm race results" hidden>
+<div class="race-lead" id="raceLead" aria-live="polite"><span id="leadText">Waiting for a completed route…</span><span class="time" id="raceClock">00:00</span></div>
+<div class="racer" id="score-astar" style="--color:#547c65"><span class="swatch"></span><span><strong>A*</strong><span class="measure">waiting</span></span></div>
+<div class="racer" id="score-dijkstra" style="--color:#b68055"><span class="swatch"></span><span><strong>Dijkstra</strong><span class="measure">waiting</span></span></div>
+<div class="racer" id="score-theta" style="--color:#7974a9"><span class="swatch"></span><span><strong>Theta*</strong><span class="measure">waiting</span></span></div>
+<div class="racer" id="score-rrt" style="--color:#6388a8"><span class="swatch"></span><span><strong>RRT*</strong><span class="measure">waiting</span></span></div>
+</div><div class="race-status mono" id="raceStatus" aria-live="polite"></div></div>
+<p class="experiment-help" id="experimentHelp">Compare shortest routes over the objects’ surfaces. Playback is paced for readability, not a speed benchmark. Keyboard: focus the scene, press 1–2 for dots or 3–6 for objects, then use arrow keys to move.</p>
+</section></main></div>
+<script>
+(() => {
+'use strict';
+// WebGL raymarched objects plus an actual shortest-surface A*/Dijkstra planner.
+// The line climbs onto obstacle surfaces when that route wins on 3D length.
+const stage=document.getElementById('stage'), render=document.getElementById('render'), trails=document.getElementById('trails'), overlay=document.getElementById('overlay');
+const STATE=document.getElementById('state'),RACE_STATUS=document.getElementById('raceStatus');
+const objects=[
+ {type:'sphere',x:-1.46,z:-.99,r:.66},
+ {type:'cube',x:.03,z:.15,rx:.59,rz:.57,angle:.24},
+ {type:'block',x:1.76,z:-.92,rx:.72,rz:.42,angle:-.47},
+ {type:'cone',x:1.71,z:1.28,r:.67}
+];
+const originalObjects=objects.map(o=>({...o}));
+const defaultStart={x:-2.36,z:1.83},defaultEnd={x:2.52,z:.66};
+let start={x:-2.36,z:1.83},end={x:2.52,z:.66};
+let drag=null,frame=0,solvers=[],raceRunning=false,raceGeneration=0,leader=null,ctx,trailCtx,starting=false,W=0,H=0,renderScale=4.5;
+let wasRaced=false;const RACEBOARD=document.getElementById('raceboard'),RUN=document.getElementById('run');
+const RACE_LEAD=document.getElementById('raceLead'),LEAD_TEXT=document.getElementById('leadText'),RACE_CLOCK=document.getElementById('raceClock');
+const FLOATING_LEAD=document.getElementById('floatingLead');
+let raceElapsed=0,raceLastTime=0,raceLastFrame=0,raceAcc={};
+// Per-second visual expansion budgets are deliberately normalized for legibility,
+// NOT a comparison of real execution speed. The algorithms themselves still run.
+const visualStepsPerSecond={astar:42,dijkstra:110,theta:34,rrt:60};
+const solverLabel=id=>({astar:'A*',dijkstra:'Dijkstra',theta:'Theta*',rrt:'RRT*'}[id]||id);
+
+const SCALE=4.5, SLOPE=1.6, XMIN=-3.05, XMAX=3.05, ZMIN=-3.04,ZMAX=3.04,STEP=.105;
+let gl,program,uniforms,glOK=false,fallbackCanvas=null;
+function createGL(){try{gl=render.getContext('webgl',{antialias:false,alpha:false,preserveDrawingBuffer:true,powerPreference:'high-performance'});if(!gl)return;
+const vert=`attribute vec2 position; void main(){gl_Position=vec4(position,0.,1.);}`;
+const frag=`precision highp float;
+uniform vec2 u_resolution;
+uniform float u_scale;
+uniform vec2 u_centers[4];
+float hash(vec2 p){p=fract(p*vec2(123.34,345.45));p+=dot(p,p+34.345);return fract(p.x*p.y);}
+float sdBox(vec3 p,vec3 b){vec3 q=abs(p)-b;return length(max(q,0.))+min(max(q.x,max(q.y,q.z)),0.);}
+vec2 rot(vec2 p,float a){float c=cos(a),s=sin(a);return vec2(c*p.x-s*p.y,s*p.x+c*p.y);}
+float sdRoundBox(vec3 p,vec3 b,float r){return sdBox(p,b)-r;}
+float sdCone(vec3 p,float h,float r1,float r2){vec2 q=vec2(length(p.xz),p.y);vec2 k1=vec2(r2,h);vec2 k2=vec2(r2-r1,2.*h);vec2 ca=vec2(q.x-min(q.x,(q.y<0.)?r1:r2),abs(q.y)-h);vec2 cb=q-k1+k2*clamp(dot(k1-q,k2)/dot(k2,k2),0.,1.);float s=(cb.x<0.&&ca.y<0.)?-1.:1.;return s*sqrt(min(dot(ca,ca),dot(cb,cb)));}
+vec2 map(vec3 p){vec2 d=vec2(p.y,0.);
+float s=length(p-vec3(u_centers[0].x,.66,u_centers[0].y))-.66;if(s<d.x)d=vec2(s,1.);
+vec3 q=p-vec3(u_centers[1].x,.59,u_centers[1].y);q.xz=rot(q.xz,.24);s=sdRoundBox(q,vec3(.55,.55,.53),.07);if(s<d.x)d=vec2(s,2.);
+q=p-vec3(u_centers[2].x,.43,u_centers[2].y);q.xz=rot(q.xz,-.47);s=sdRoundBox(q,vec3(.68,.40,.40),.038);if(s<d.x)d=vec2(s,3.);
+s=sdCone(p-vec3(u_centers[3].x,.53,u_centers[3].y),.53,.67,.08);if(s<d.x)d=vec2(s,4.);
+return d;}
+vec3 normal(vec3 p){vec2 e=vec2(.0012,0.);return normalize(vec3(map(p+e.xyy).x-map(p-e.xyy).x,map(p+e.yxy).x-map(p-e.yxy).x,map(p+e.yyx).x-map(p-e.yyx).x));}
+float shadow(vec3 ro,vec3 rd){float res=1.,t=.03;for(int i=0;i<28;i++){float h=map(ro+rd*t).x;res=min(res,12.*h/t);t+=clamp(h,.025,.22);if(res<.03||t>9.)break;}return clamp(res,0.,1.);}
+float ao(vec3 p,vec3 n){float occ=0.,sc=1.;for(int i=1;i<=4;i++){float h=.065*float(i);float d=map(p+n*h).x;occ+=(h-d)*sc;sc*=.7;}return clamp(1.-occ*1.35,0.,1.);}
+void main(){vec2 pos=(gl_FragCoord.xy-u_resolution*.5)/u_resolution.y*u_scale;
+vec3 ro=vec3(pos.x,8.+pos.y*.7808688,10.-pos.y*.624695);vec3 rd=normalize(vec3(0.,-8.,-10.));
+// Raymarch with an orthographic 3/4 camera looking down at an actual 3D scene.
+float t=0.;vec2 hit=vec2(0.);for(int i=0;i<85;i++){vec3 p=ro+rd*t;hit=map(p);if(hit.x<.0014||t>32.)break;t+=max(hit.x,.003);}
+vec3 p=ro+rd*t,n=normal(p);float mat=hit.y;vec3 base=vec3(.765,.755,.724);
+float grain=hash(floor(p.xz*390.));float mott=sin(p.x*47.)*sin(p.z*54.)*.012+ (hash(floor(p.xz*10.))-.5)*.014;
+if(mat<.5){base+=vec3(mott+grain*.018);float dotted=smoothstep(.03,.0,length(fract(p.xz*3.)-.5));base-=dotted*.012;}
+if(mat>.5&&mat<1.5){base=vec3(.235,.249,.252);base+=.017*sin(p.x*41.)*sin(p.y*47.)*sin(p.z*38.);}
+if(mat>1.5&&mat<2.5){base=vec3(.73,.735,.703)+.008*sin(p.x*57.)*sin(p.z*29.);}
+if(mat>2.5&&mat<3.5){base=vec3(.48,.495,.484)+.011*sin(p.x*23.)*sin(p.z*40.);}
+if(mat>3.5){base=vec3(.57,.609,.575)+.012*sin(p.x*36.)*sin(p.y*21.);}
+vec3 sun=normalize(vec3(-.62,1.,.67));float dif=max(0.,dot(n,sun));float sh=shadow(p+n*.018,sun);float ambient=.72;
+vec3 col=base*(ambient+dif*.55*sh)*ao(p,n);
+float spec=pow(max(0.,dot(reflect(-sun,n),-rd)),mat<.5?10.:25.);col+=vec3(.92,.88,.81)*spec*sh*(mat<.5?.03:.13);
+// Warm key light, subtle cool fill, soft contrast, gamma output.
+col+=base*max(dot(n,normalize(vec3(.4,.3,-1.))),0.)*.10;
+float vign=length((gl_FragCoord.xy-u_resolution*.5)/u_resolution.y);col*=1.-.11*smoothstep(.3,.85,vign);
+col=pow(max(col,0.),vec3(.94));col+=(hash(gl_FragCoord.xy)-.5)*.008;
+gl_FragColor=vec4(col,1.);
+}`;
+function compile(type,source){const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s}
+program=gl.createProgram();gl.attachShader(program,compile(gl.VERTEX_SHADER,vert));gl.attachShader(program,compile(gl.FRAGMENT_SHADER,frag));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));gl.useProgram(program);let pos=gl.getAttribLocation(program,'position'),buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);uniforms={res:gl.getUniformLocation(program,'u_resolution'),scale:gl.getUniformLocation(program,'u_scale'),centers:gl.getUniformLocation(program,'u_centers[0]')};glOK=true;}catch(e){console.warn('WebGL unavailable, using a canvas fallback',e);glOK=false;}}
+function drawFallback(){let c=render.getContext('2d');if(!c){if(!fallbackCanvas){fallbackCanvas=document.createElement('canvas');fallbackCanvas.setAttribute('aria-hidden','true');fallbackCanvas.style.zIndex='1';stage.insertBefore(fallbackCanvas,render);render.style.display='none'}const dpr=Math.min(window.devicePixelRatio||1,1.55);fallbackCanvas.width=Math.floor(W*dpr);fallbackCanvas.height=Math.floor(H*dpr);c=fallbackCanvas.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0)}if(!c)return;
+ const dprNow=Math.min(window.devicePixelRatio||1,1.55);c.setTransform(dprNow,0,0,dprNow,0,0);
+ c.clearRect(0,0,W,H);const bg=c.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#dedbd1');bg.addColorStop(1,'#c8c4b9');c.fillStyle=bg;c.fillRect(0,0,W,H);
+ const visible=[...objects].sort((a,b)=>a.z-b.z);
+ function poly(points,fill){c.beginPath();c.moveTo(points[0].x,points[0].y);for(let i=1;i<points.length;i++)c.lineTo(points[i].x,points[i].y);c.closePath();c.fillStyle=fill;c.fill()}
+ for(let o of visible){const foot=worldToPx(o.x,o.z,0);c.save();c.shadowColor='rgba(59,54,45,.38)';c.shadowBlur=26;c.shadowOffsetY=12;
+  if(o.type==='sphere'){const r=H*.66/renderScale;const q=worldToPx(o.x,o.z,.70);const g=c.createRadialGradient(q.x-r*.40,q.y-r*.54,r*.08,q.x,q.y,r);g.addColorStop(0,'#7b8281');g.addColorStop(.5,'#424b4b');g.addColorStop(1,'#2c3233');c.fillStyle=g;c.beginPath();c.arc(q.x,q.y,r,0,Math.PI*2);c.fill()}
+  else if(o.type==='cone'){const base=worldToPx(o.x,o.z,.05),tip=worldToPx(o.x,o.z,1.06),radius=H*.65/renderScale;c.beginPath();c.moveTo(tip.x,tip.y);c.lineTo(base.x-radius,base.y+radius*.26);c.quadraticCurveTo(base.x,base.y+radius*.45,base.x+radius,base.y+radius*.26);c.closePath();const g=c.createLinearGradient(base.x-radius,0,base.x+radius,0);g.addColorStop(0,'#424d45');g.addColorStop(.42,'#839084');g.addColorStop(1,'#535d55');c.fillStyle=g;c.fill()}
+  else{const y=o.type==='cube'?1.19:.868,rx=o.rx,rz=o.rz,a=o.angle,cosa=Math.cos(a),sina=Math.sin(a);
+   function corners(height){const out=[];for(const [dx,dz] of [[-rx,-rz],[rx,-rz],[rx,rz],[-rx,rz]]){let x=o.x+cosa*dx+sina*dz,z=o.z-sina*dx+cosa*dz;out.push(worldToPx(x,z,height))}return out}
+   const low=corners(0),high=corners(y);poly([low[2],low[3],high[3],high[2]],o.type==='cube'?'#96988f':'#656d66');poly([low[1],low[2],high[2],high[1]],o.type==='cube'?'#bab9b0':'#777e76');poly(high,o.type==='cube'?'#d3d1c5':'#8e948b');
+   c.strokeStyle='rgba(255,255,255,.16)';c.lineWidth=1;c.beginPath();c.moveTo(high[0].x,high[0].y);for(let i=1;i<4;i++)c.lineTo(high[i].x,high[i].y);c.closePath();c.stroke()}
+  c.restore()}}
+// All algorithms use the same 3D surface-cost function. Shortest FOUND is
+// not necessarily a globally shortest continuous-space path.
+function worldToPx(x,z,y=0){return {x:W/2+x/renderScale*H,y:H/2+(z-1.25*y)/(renderScale*SLOPE)*H}}
+function pxToWorld(x,y){return {x:(x-W/2)/H*renderScale,z:(y-H/2)/H*renderScale*SLOPE}}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function localXZ(o,x,z){const dx=x-o.x,dz=z-o.z,a=o.angle||0,c=Math.cos(a),s=Math.sin(a);return {x:c*dx-s*dz,z:s*dx+c*dz}}
+function footprint(o,x,z,margin=0){const p=localXZ(o,x,z);if(o.type==='sphere'||o.type==='cone')return Math.hypot(p.x,p.z)<o.r+margin;return Math.abs(p.x)<o.rx+margin&&Math.abs(p.z)<o.rz+margin}
+function heightAt(x,z){let h=0;for(const o of objects){const p=localXZ(o,x,z),d=Math.hypot(p.x,p.z);if(o.type==='sphere'&&d<o.r){h=Math.max(h,o.r+Math.sqrt(Math.max(0,o.r*o.r-d*d)))}else if(o.type==='cone'&&d<o.r){h=Math.max(h,1.06*clamp((o.r-d)/(o.r-.08),0,1))}else if(o.type==='cube'&&Math.abs(p.x)<o.rx&&Math.abs(p.z)<o.rz){h=Math.max(h,1.19)}else if(o.type==='block'&&Math.abs(p.x)<o.rx&&Math.abs(p.z)<o.rz){h=Math.max(h,.868)}}return h}
+function validWorld(x,z){return x>XMIN+.04&&x<XMAX-.04&&z>ZMIN+.04&&z<ZMAX-.04}
+function nearestValid(p){return {x:clamp(p.x,XMIN+.06,XMAX-.06),z:clamp(p.z,ZMIN+.06,ZMAX-.06)}}
+function allowed(x,z){return validWorld(x,z)}
+function surfacePoint(x,z){return {x,z,y:heightAt(x,z)+.025}}
+// A true sampled length integral: horizontal travel plus all vertical rises and descents.
+// Samples crossing prohibited footprints return Infinity. The route never tunnels.
+function segmentCost(a,b){const d=Math.hypot(b.x-a.x,b.z-a.z);if(d<1e-8)return Math.abs(heightAt(b.x,b.z)-heightAt(a.x,a.z));let steps=Math.max(2,Math.ceil(d/.048)),x0=a.x,z0=a.z,h0=heightAt(x0,z0),dist=0;
+ for(let i=1;i<=steps;i++){let t=i/steps,x=a.x+(b.x-a.x)*t,z=a.z+(b.z-a.z)*t;if(!allowed(x,z))return Infinity;let h=heightAt(x,z);dist+=Math.hypot(x-x0,z-z0,h-h0);x0=x;z0=z;h0=h}return dist}
+const NSTEP=.15,COLS=Math.floor((XMAX-XMIN)/NSTEP)+1,ROWS=Math.floor((ZMAX-ZMIN)/NSTEP)+1,N=COLS*ROWS;
+const dirs=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+const index=(i,j)=>j*COLS+i;
+const point=k=>({x:XMIN+(k%COLS)*NSTEP,z:ZMIN+Math.floor(k/COLS)*NSTEP});
+const key=p=>index(clamp(Math.round((p.x-XMIN)/NSTEP),0,COLS-1),clamp(Math.round((p.z-ZMIN)/NSTEP),0,ROWS-1));
+function nearestGraph(p){let best=-1,dist=Infinity;const k=key(p),i=k%COLS,j=Math.floor(k/COLS);for(let rad=0;rad<12;rad++){for(let dj=-rad;dj<=rad;dj++)for(let di=-rad;di<=rad;di++){if(rad>0&&Math.max(Math.abs(di),Math.abs(dj))!==rad)continue;let ii=i+di,jj=j+dj;if(ii<0||ii>=COLS||jj<0||jj>=ROWS)continue;let q=point(index(ii,jj)),ds=Math.hypot(p.x-q.x,p.z-q.z);if(ds>=dist||!allowed(q.x,q.z))continue;if(Number.isFinite(segmentCost(p,q))){best=index(ii,jj);dist=ds}}if(best>=0)return best}return k}
+// Simple priority queue, supporting duplicate improvements and skipping stale closures.
+class Heap{constructor(){this.data=[]} push(id,priority){const v={id,priority},a=this.data;let i=a.length;a.push(v);while(i){let j=(i-1)>>1;if(a[j].priority<=priority)break;a[i]=a[j];i=j}a[i]=v} pop(){let a=this.data,ret=a[0];let v=a.pop();if(a.length){let i=0;while(i*2+1<a.length){let j=i*2+1;if(j+1<a.length&&a[j+1].priority<a[j].priority)j++;if(a[j].priority>=v.priority)break;a[i]=a[j];i=j}a[i]=v}return ret} get length(){return this.data.length}}
+function makeGridSolver(id,color){const src=nearestGraph(start),dst=nearestGraph(end),g=new Float64Array(N).fill(Infinity),parent=new Int32Array(N).fill(-1),closed=new Uint8Array(N),heap=new Heap();let expanded=0,done=false,route=null,current=src;
+ const heur=k=>id==='dijkstra'?0:Math.hypot(point(k).x-point(dst).x,point(k).z-point(dst).z);
+ g[src]=0;heap.push(src,heur(src));
+ function step(){if(done)return null;while(heap.length){let {id:k}=heap.pop();if(closed[k])continue;closed[k]=1;expanded++;current=k;const a=point(k);if(k===dst){done=true;let path=[];for(let q=dst;q>=0&&path.length<=N;q=parent[q]){path.push(point(q));if(q===src)break}path.reverse();if(path.length){path.unshift({...start});path.push({...end})}route=buildRoute(path);return {a,finished:true}}
+ const i=k%COLS,j=Math.floor(k/COLS);
+ for(const [di,dj] of dirs){let ii=i+di,jj=j+dj;if(ii<0||ii>=COLS||jj<0||jj>=ROWS)continue;let v=index(ii,jj),b=point(v);if(closed[v]||!allowed(b.x,b.z))continue;const edge=segmentCost(a,b);if(!Number.isFinite(edge))continue;
+ let val=g[k]+edge,from=k;
+ if(id==='theta'&&parent[k]>=0){let pivot=parent[k],direct=segmentCost(point(pivot),b);if(Number.isFinite(direct)&&g[pivot]+direct<val){val=g[pivot]+direct;from=pivot}}
+ if(val+1e-8<g[v]){g[v]=val;parent[v]=from;heap.push(v,val+heur(v))}
+ }return {a,finished:false}}
+ done=true;return {finished:true}}
+ function trace(){if(route)return route;let path=[],q=current,guard=0;while(q>=0&&guard++<N){path.push(point(q));if(q===src)break;q=parent[q]}path.reverse();if(path.length&&Math.hypot(path[0].x-start.x,path[0].z-start.z)>.01)path.unshift({...start});return path.length>=2?buildRoute(path,false):null}
+ return {id,color,step,trace,get expanded(){return expanded},get done(){return done},get route(){return route},get tree(){return null}}}
+// RRT*: an incremental, seeded sampling tree. Rewiring improves an existing route.
+// It is an anytime approximation, not a finite-time optimality guarantee.
+function makeRRT(color){let seed=48271;const rand=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+ const nodes=[{p:{...start},parent:-1,cost:0}], maxNodes=880, radius=.72, stride=.34;let expanded=0,done=false,route=null,goalParent=-1,goalCost=Infinity,lastIdx=0;
+ const sq=(a,b)=>(a.x-b.x)**2+(a.z-b.z)**2;
+ function isAncestor(i,j){let guard=0;while(j>=0&&guard++<2000){if(j===i)return true;j=nodes[j].parent}return false}
+ function updateGoal(){let best=Infinity,parent=-1;for(let i=0;i<nodes.length;i++){let a=nodes[i];if(Math.sqrt(sq(a.p,end))>.95)continue;let cost=segmentCost(a.p,end);if(Number.isFinite(cost)&&a.cost+cost<best){best=a.cost+cost;parent=i}}goalCost=best;goalParent=parent;}
+ function makePath(){if(goalParent<0)return null;let points=[{...end}],i=goalParent,guard=0;while(i>=0&&guard++<2000){points.push(nodes[i].p);i=nodes[i].parent}points.reverse();return buildRoute(points)}
+ function step(){if(done)return null;if(expanded>=maxNodes){done=true;updateGoal();route=makePath();return {finished:true}}
+ let p=rand()<.20?end:{x:XMIN+.08+rand()*(XMAX-XMIN-.16),z:ZMIN+.08+rand()*(ZMAX-ZMIN-.16)};
+ let nearest=0,dmin=Infinity;for(let j=0;j<nodes.length;j++){let d=sq(p,nodes[j].p);if(d<dmin){dmin=d;nearest=j}}
+ let a=nodes[nearest].p,length=Math.sqrt(dmin),t=Math.min(1,stride/(length||1)),candidate=nearestValid({x:a.x+(p.x-a.x)*t,z:a.z+(p.z-a.z)*t});expanded++;
+ if(!allowed(candidate.x,candidate.z)||!Number.isFinite(segmentCost(a,candidate)))return null;
+ const near=[],limit=radius*radius;for(let i=0;i<nodes.length;i++)if(sq(nodes[i].p,candidate)<limit)near.push(i);
+ let parent=nearest,cost=nodes[nearest].cost+segmentCost(nodes[nearest].p,candidate);
+ for(let i of near){const stepCost=segmentCost(nodes[i].p,candidate);if(Number.isFinite(stepCost)&&nodes[i].cost+stepCost<cost){cost=nodes[i].cost+stepCost;parent=i}}
+ if(!Number.isFinite(cost))return null;
+ let idx=nodes.length;nodes.push({p:candidate,parent,cost});lastIdx=idx;
+ for(let i of near){if(i===parent||i===0||isAncestor(i,idx))continue;const edge=segmentCost(candidate,nodes[i].p),newCost=cost+edge;if(Number.isFinite(edge)&&newCost+1e-5<nodes[i].cost){let delta=nodes[i].cost-newCost;nodes[i].parent=idx;nodes[i].cost=newCost;
+ // Propagate changed costs to descendants, keeping the tree's costs truthful.
+ const stack=[i];while(stack.length){const from=stack.pop();for(let j=0;j<nodes.length;j++)if(nodes[j].parent===from){nodes[j].cost-=delta;stack.push(j)}}}}
+ if(Math.sqrt(sq(candidate,end))<.95||expanded%18===0)updateGoal();
+ if(goalParent>=0&&(expanded%18===0||expanded===maxNodes))route=makePath();
+ return {a:candidate,from:nodes[parent].p,finished:false}}
+ function trace(){if(route)return route;let points=[],i=lastIdx,guard=0;while(i>=0&&guard++<2000){points.push(nodes[i].p);i=nodes[i].parent}points.reverse();return points.length>=2?buildRoute(points,false):null}
+ return {id:'rrt',color,step,trace,get expanded(){return expanded},get done(){return done},get route(){return route},get tree(){return nodes}}}
+function streamline(points){
+ if(points.length<=2)return points;
+ const prefixes=[0];for(let i=1;i<points.length;i++){let c=segmentCost(points[i-1],points[i]);prefixes.push(prefixes[i-1]+c)}
+ let out=[points[0]],i=0;
+ while(i<points.length-1){let next=i+1;
+ // Only remove intermediate waypoints when the direct surface route is no
+ // more expensive. Clear space becomes a straight segment; obstacle corners stay.
+ for(let j=points.length-1;j>i+1;j--){const direct=segmentCost(points[i],points[j]);const original=prefixes[j]-prefixes[i];if(Number.isFinite(direct)&&direct<=original+Math.max(.004,original*.003)){next=j;break}}
+ out.push(points[next]);i=next;
+ }return out
+}
+function roundCorners(points){
+ if(points.length<3)return points;
+ const result=[points[0]];
+ for(let i=1;i<points.length-1;i++){
+  const prev=points[i-1],v=points[i],next=points[i+1];const len1=Math.hypot(v.x-prev.x,v.z-prev.z),len2=Math.hypot(next.x-v.x,next.z-v.z);
+  const t=Math.min(.115,len1*.27,len2*.27);
+  if(t<.018){result.push(v);continue}
+  const a={x:v.x+(prev.x-v.x)*t/len1,z:v.z+(prev.z-v.z)*t/len1},b={x:v.x+(next.x-v.x)*t/len2,z:v.z+(next.z-v.z)*t/len2};
+  let prevP=a,ok=true,arc=[a];for(let k=1;k<=7;k++){const u=k/7,one=1-u,q={x:one*one*a.x+2*one*u*v.x+u*u*b.x,z:one*one*a.z+2*one*u*v.z+u*u*b.z};if(!Number.isFinite(segmentCost(prevP,q))){ok=false;break}arc.push(q);prevP=q}
+  // Don't round a corner through a forbidden footprint; avoid costly false
+  // excursions across a raised platform as well.
+  let curved=segmentCost(prev,a),base=segmentCost(a,v)+segmentCost(v,b);
+  if(ok){curved=0;for(let j=1;j<arc.length;j++)curved+=segmentCost(arc[j-1],arc[j]);if(curved>base+Math.max(.017,base*.045))ok=false}
+  if(ok)result.push(...arc);else result.push(v)
+ }
+ result.push(points[points.length-1]);return result
+}
+function buildRoute(points,polish=true){
+ if(!points||points.length<2)return null;
+ let clean=polish?roundCorners(streamline(points)):points;
+ const dense=[];for(let k=1;k<clean.length;k++){const a=clean[k-1],b=clean[k],d=Math.hypot(b.x-a.x,b.z-a.z),steps=Math.max(2,Math.ceil(d/.042));for(let n=(k===1?0:1);n<=steps;n++){let t=n/steps,p=surfacePoint(a.x+(b.x-a.x)*t,a.z+(b.z-a.z)*t),last=dense[dense.length-1];if(last&&Math.abs(p.y-last.y)>.11){let sections=Math.ceil(Math.abs(p.y-last.y)/.045);for(let m=1;m<sections;m++)dense.push({x:p.x,z:p.z,y:last.y+(p.y-last.y)*m/sections})}dense.push(p)}}
+ let cost=0;for(let k=1;k<clean.length;k++)cost+=segmentCost(clean[k-1],clean[k]);
+ return {points:clean,dense,cost,rendered:null}
+}
+const colors={astar:'#547c65',dijkstra:'#b68055',theta:'#7974a9',rrt:'#6388a8'};
+let trailDirty=false;
+function clearTrails(){if(trailCtx)trailCtx.clearRect(0,0,W,H);trails.style.opacity='0';}
+function leadingRoute(){return solvers.filter(s=>s.route).sort((a,b)=>a.route.cost-b.route.cost)[0]||null}
+function updateScores(){
+ const current=raceRunning?leadingRoute():leader;
+ for(let s of solvers){let el=document.getElementById('score-'+s.id);if(!el)continue;
+  el.classList.toggle('winner',!raceRunning&&leader===s);
+  el.classList.toggle('provisional',raceRunning&&current===s);
+  const route=s.route,mark=route?(s.done?'✓ ':'↗ '):s.done?'— ':'… ';
+  el.querySelector('.measure').textContent=route?`${mark}${route.cost.toFixed(2)} units · ${s.expanded} visited`:s.done?`no route · ${s.expanded} visited`:`${s.expanded} visited · searching`;
+ }
+ if(raceRunning){
+  const searching=solvers.filter(s=>!s.done).length,found=solvers.filter(s=>s.route).length;
+  LEAD_TEXT.innerHTML=current?`<strong>${solverLabel(current.id)} leads</strong> · ${current.route.cost.toFixed(2)} units · ${searching} still exploring`:`<strong>Searching for routes</strong> · ${found}/4 found · ${searching} exploring`;
+  FLOATING_LEAD.textContent=current?`● ${solverLabel(current.id)} leads · ${current.route.cost.toFixed(2)} units`:'● searching for a valid route…';
+ }
+ RACE_CLOCK.textContent=`${Math.floor(raceElapsed/60).toString().padStart(2,'0')}:${Math.floor(raceElapsed%60).toString().padStart(2,'0')}`;
+}
+function computeQuiet(){
+ // Rest state: no solver runs and no route is drawn until the visitor chooses Race.
+ cancelAnimationFrame(frame);raceGeneration++;raceRunning=false;
+ raceElapsed=0;raceLastTime=0;wasRaced=false;leader=null;solvers=[];
+ clearTrails();RACEBOARD.hidden=true;
+ FLOATING_LEAD.hidden=true;RUN.disabled=false;RUN.textContent='▶ race them';
+ STATE.textContent='';STATE.parentElement.hidden=true;
+ RACE_STATUS.textContent='';
+ drawOverlay();
+}
+function resetRace(){
+ cancelAnimationFrame(frame);raceGeneration++;raceRunning=false;raceElapsed=0;raceLastTime=0;raceLastFrame=0;raceAcc={astar:0,dijkstra:0,theta:0,rrt:0};
+ leader=null;wasRaced=true;clearTrails();RACEBOARD.hidden=false;
+ solvers=[makeGridSolver('astar',colors.astar),makeGridSolver('dijkstra',colors.dijkstra),makeGridSolver('theta',colors.theta),makeRRT(colors.rrt)];
+ FLOATING_LEAD.hidden=false;
+ STATE.parentElement.hidden=false;STATE.textContent='● exploring';STATE.style.color='#587c5e';
+ RACE_STATUS.textContent='Race in progress.';
+ RUN.disabled=true;RUN.textContent='racing…';raceRunning=true;updateScores();drawOverlay();frame=requestAnimationFrame(tickRace)
+}
+function tickRace(now){
+ if(!raceRunning||drag)return;
+ if(!raceLastTime)raceLastTime=now;
+ const delta=Math.min(.18,Math.max(0,(now-raceLastTime)/1000));raceLastTime=now;
+ // Process only small, regularly spaced batches; this prevents a 144 Hz monitor
+ // from making the algorithm search dramatically faster than a 60 Hz display.
+ const dt=delta;raceElapsed+=dt;
+ let allDone=true,changed=false;
+ for(let s of solvers){
+  if(!s.done){raceAcc[s.id]+=(visualStepsPerSecond[s.id]||50)*dt;
+   let steps=Math.min(24,Math.floor(raceAcc[s.id]));raceAcc[s.id]-=steps;
+   for(let j=0;j<steps&&!s.done;j++){s.step();changed=true}
+   if(!s.done)allDone=false;
+  }
+ }
+ // Redraw at about 12 fps: trajectories are watchable, not a blur of fragments.
+ if(now-raceLastFrame>85||allDone){
+  raceLastFrame=now;
+  for(const s of solvers)if(changed||!s.preview)s.preview=s.route||s.trace();
+  updateScores();drawOverlay();
+  if(leader===null){const current=leadingRoute();STATE.textContent=current?`● ${solverLabel(current.id)} leading`:'● exploring';}
+ }
+ if(allDone){finishRace();return}
+ frame=requestAnimationFrame(tickRace)
+}
+function finishRace(){
+ raceRunning=false;leader=leadingRoute();
+ FLOATING_LEAD.hidden=true;
+ updateScores();clearTrails();RUN.disabled=false;RUN.textContent='↻ race again';
+ if(leader){
+  LEAD_TEXT.innerHTML=`<strong>${solverLabel(leader.id)} · shortest found</strong> · ${leader.route.cost.toFixed(2)} units`;
+  STATE.textContent='● race finished';
+  RACE_STATUS.textContent='';
+ }else{STATE.textContent='● no route';LEAD_TEXT.textContent='No path found';RACE_STATUS.textContent='No valid route found. Move the endpoints.'}
+ drawOverlay()
+}
+// The camera and object SDFs below match the WebGL raymarched geometry closely
+// enough for CPU-side route occlusion. A hidden part becomes a ghosted dashed
+// line; visible parts are solid and have a small surface-contact highlight.
+function boxSDF(x,y,z,bx,by,bz){const dx=Math.abs(x)-bx,dy=Math.abs(y)-by,dz=Math.abs(z)-bz;return Math.hypot(Math.max(0,dx),Math.max(0,dy),Math.max(0,dz))+Math.min(Math.max(dx,dy,dz),0)}
+function coneSDF(x,y,z){const r=Math.hypot(x,z),h=.53,bot=.67,top=.08, k1x=top,k1y=h,k2x=top-bot,k2y=2*h;
+ const cax=r-Math.min(r,y<0?bot:top),cay=Math.abs(y)-h;
+ const t=clamp(((k1x-r)*k2x+(k1y-y)*k2y)/(k2x*k2x+k2y*k2y),0,1);
+ const cbx=r-k1x+k2x*t,cby=y-k1y+k2y*t;
+ const sgn=(cbx<0&&cay<0)?-1:1;return sgn*Math.sqrt(Math.min(cax*cax+cay*cay,cbx*cbx+cby*cby))}
+function sceneSDF(x,y,z){let d=y;
+ d=Math.min(d,Math.hypot(x-objects[0].x,y-.66,z-objects[0].z)-.66);
+ let c=localXZ(objects[1],x,z);d=Math.min(d,boxSDF(c.x,y-.59,c.z,.55,.55,.53)-.07);
+ c=localXZ(objects[2],x,z);d=Math.min(d,boxSDF(c.x,y-.43,c.z,.68,.4,.4)-.038);
+ d=Math.min(d,coneSDF(x-objects[3].x,y-.53,z-objects[3].z));return d}
+function isOccluded(p){const posY=(1.25*p.y-p.z)/1.600781,x=p.x,oy=8+posY*.7808688,oz=10-posY*.624695;
+ const rdY=-.624695,rdZ=-.780869,target=(oy-p.y)/.624695;
+ if(target<=0)return false;
+ // Sphere-trace a camera ray and stop *before* the point itself.
+ let t=0;for(let i=0;i<105&&t<target-.065;i++){
+   let dist=sceneSDF(x,oy+rdY*t,oz+rdZ*t);
+   if(dist<.006)return true;
+   t+=Math.max(.012,Math.min(.22,dist*.82));
+ }
+ return false
+}
+function drawRoute(route,color,width,final){if(!route||!ctx)return;if(!route.rendered){route.rendered=route.dense.map(p=>({...worldToPx(p.x,p.z,p.y),hidden:isOccluded(p)}))}
+ const pts=route.rendered;ctx.save();ctx.lineJoin='round';ctx.lineCap='round';
+ for(let i=1;i<pts.length;i++){let a=pts[i-1],b=pts[i],hidden=a.hidden||b.hidden;
+ ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+ if(hidden){ctx.setLineDash([3,4]);ctx.strokeStyle=final?'rgba(73,93,76,.43)':color;ctx.globalAlpha=final?1:.18;ctx.lineWidth=final?1.7:1.1;ctx.stroke();ctx.setLineDash([])}
+ else if(final){ctx.globalAlpha=1;ctx.lineWidth=5.5;ctx.strokeStyle='rgba(247,245,237,.95)';ctx.stroke();ctx.lineWidth=2.9;ctx.strokeStyle=color;ctx.stroke()}
+ else{ctx.globalAlpha=.73;ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke()}}
+ ctx.restore()}
+function drawOverlay(){if(!ctx)return;ctx.clearRect(0,0,W,H);if(drag===null){if(leader){drawRoute(leader.route,'#416c51',3,true)}else if(raceRunning){for(let s of solvers){let path=s.route||s.preview;if(path)drawRoute(path,s.color,1.8,false)}const ahead=leadingRoute();if(ahead?.route)drawRoute(ahead.route,ahead.color,2.8,false)}}
+ // Keep hidden endpoints subtle and visibly occluded by geometry.
+ for(const [p,color,label] of [[start,'#577b5d','start'],[end,'#c17b50','goal']]){
+ const three=surfacePoint(p.x,p.z),v=worldToPx(three.x,three.z,three.y),behind=isOccluded(three);
+ ctx.save();ctx.beginPath();ctx.arc(v.x,v.y,10.5,0,2*Math.PI);ctx.fillStyle=behind?'rgba(246,243,232,.16)':'#f4f1e9';ctx.fill();
+ ctx.beginPath();ctx.arc(v.x,v.y,7.5,0,2*Math.PI);ctx.strokeStyle=behind?'rgba(76,84,75,.63)':color;ctx.lineWidth=2.5;ctx.setLineDash(behind?[2.1,2.4]:[]);ctx.stroke();ctx.setLineDash([]);
+ if(!behind){ctx.beginPath();ctx.arc(v.x,v.y,3.3,0,2*Math.PI);ctx.fillStyle=color;ctx.fill()}
+ ctx.font="10px 'DM Mono',monospace";ctx.textAlign='center';ctx.fillStyle=behind?'#85827a':'#454a41';ctx.fillText(behind?`${label} · behind`:label,v.x,v.y-17);ctx.restore()}}
+function drawScene(){
+ if(glOK){
+  gl.viewport(0,0,render.width,render.height);gl.useProgram(program);
+  gl.uniform2f(uniforms.res,render.width,render.height);
+  gl.uniform1f(uniforms.scale,renderScale);
+  gl.uniform2fv(uniforms.centers,new Float32Array(objects.flatMap(o=>[o.x,o.z])));
+  gl.drawArrays(gl.TRIANGLES,0,6);
+ }else drawFallback();
+}
+function resize(){let r=stage.getBoundingClientRect();if(!r.width||!r.height)return;W=r.width;H=r.height;renderScale=Math.max(SCALE,7.5*H/W);let dpr=Math.min(window.devicePixelRatio||1,1.55);for(const c of [render,trails,overlay]){c.width=Math.floor(W*dpr);c.height=Math.floor(H*dpr)}ctx=overlay.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);trailCtx=trails.getContext('2d');trailCtx.setTransform(dpr,0,0,dpr,0,0);drawScene();for(const s of solvers||[])for(const route of [s.route,s.preview])if(route)route.rendered=null;drawOverlay()}
+function pointerPos(e){const r=stage.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+function hitPoint(x,y,p){let v=worldToPx(p.x,p.z,heightAt(p.x,p.z)+.025);return Math.hypot(v.x-x,v.y-y)<32}
+// The object picker casts through the actual projected shape, not a rectangular hit box.
+// This prevents clicking empty space beside a rounded object from grabbing it.
+function objectContains(o,x,y,z){
+ const q=localXZ(o,x,z),r=Math.hypot(q.x,q.z);
+ if(o.type==='sphere')return Math.hypot(x-o.x,y-.66,z-o.z)<.66;
+ if(o.type==='cube')return Math.abs(q.x)<.61&&Math.abs(q.z)<.59&&y>=0&&y<1.20;
+ if(o.type==='block')return Math.abs(q.x)<.73&&Math.abs(q.z)<.45&&y>=0&&y<.87;
+ if(o.type==='cone')return y>=0&&y<1.06&&r<.08+(.67-.08)*(1-y/1.06);
+ return false;
+}
+function pickObject(px,py){
+ const sx=(px-W/2)/H*renderScale,sz=(py-H/2)/H*renderScale*SLOPE;
+ if(sx<XMIN-1||sx>XMAX+1)return -1;
+ // Starting high and descending gives the frontmost object under the pointer.
+ for(let y=1.95;y>=.025;y-=.038){
+  let z=sz+1.25*y;
+  for(let i=0;i<objects.length;i++)if(objectContains(objects[i],sx,y,z))return i;
+ }
+ return -1;
+}
+// Real 2D footprint collision tests: circles for the sphere/cone and rotated
+// rectangles for the cube/block. A small clearance keeps their shaded edges
+// from visually merging. The geometry is shared by the two renderers.
+const OBJECT_GAP=.065;
+function isRound(o){return o.type==='sphere'||o.type==='cone'}
+function rectAxes(o){
+ const c=Math.cos(o.angle||0),s=Math.sin(o.angle||0);
+ return [{x:c,z:-s},{x:s,z:c}];
+}
+function rectHalfExtents(o){
+ // The rendered rounded bevel is a little wider than the pathfinding footprint.
+ const bevel=o.type==='cube'?.03:.02;
+ return {x:o.rx+bevel,z:o.rz+bevel};
+}
+function dot2(a,b){return a.x*b.x+a.z*b.z}
+function overlapsObjects(a,b){
+ if(isRound(a)&&isRound(b))
+  return Math.hypot(a.x-b.x,a.z-b.z)<a.r+b.r+OBJECT_GAP;
+ if(isRound(a)!==isRound(b)){
+  const circle=isRound(a)?a:b,rect=isRound(a)?b:a;
+  const p=localXZ(rect,circle.x,circle.z),h=rectHalfExtents(rect);
+  const dx=p.x-clamp(p.x,-h.x,h.x),dz=p.z-clamp(p.z,-h.z,h.z);
+  return dx*dx+dz*dz<(circle.r+OBJECT_GAP)**2;
+ }
+ const axesA=rectAxes(a),axesB=rectAxes(b),ha=rectHalfExtents(a),hb=rectHalfExtents(b);
+ const delta={x:b.x-a.x,z:b.z-a.z};
+ for(const axis of [...axesA,...axesB]){
+  const projA=ha.x*Math.abs(dot2(axis,axesA[0]))+ha.z*Math.abs(dot2(axis,axesA[1]));
+  const projB=hb.x*Math.abs(dot2(axis,axesB[0]))+hb.z*Math.abs(dot2(axis,axesB[1]));
+  if(Math.abs(dot2(delta,axis))>=projA+projB+OBJECT_GAP)return false;
+ }
+ return true;
+}
+function objectBounds(o){
+ if(isRound(o))return {x:o.r,z:o.r};
+ const a=rectAxes(o),h=rectHalfExtents(o);
+ return {x:Math.abs(a[0].x)*h.x+Math.abs(a[1].x)*h.z,
+         z:Math.abs(a[0].z)*h.x+Math.abs(a[1].z)*h.z};
+}
+function objectFits(i,x,z){
+ const o=objects[i],bounds=objectBounds(o),edge=.02;
+ if(x-bounds.x<XMIN+edge||x+bounds.x>XMAX-edge||
+    z-bounds.z<ZMIN+edge||z+bounds.z>ZMAX-edge)return false;
+ const moved={...o,x,z};
+ return objects.every((other,j)=>j===i||!overlapsObjects(moved,other));
+}
+function moveObject(i,desiredX,desiredZ){
+ const o=objects[i],deltaX=desiredX-o.x,deltaZ=desiredZ-o.z;
+ if(Math.hypot(deltaX,deltaZ)<.0001)return;
+ // Small swept steps prevent a fast drag from passing through another solid.
+ const count=Math.max(1,Math.ceil(Math.hypot(deltaX,deltaZ)/.035));
+ const sx=deltaX/count,sz=deltaZ/count;
+ let moved=false;
+ for(let k=0;k<count;k++){
+  const x=o.x+sx,z=o.z+sz;
+  if(objectFits(i,x,z)){o.x=x;o.z=z;moved=true;continue;}
+  // Slide along an obstacle or the scene edge instead of jumping through it.
+  const xOK=objectFits(i,x,o.z);
+  if(xOK){o.x=x;moved=true;}
+  // Check z against the possibly updated x, not the original position.
+  const zOK=objectFits(i,o.x,z);
+  if(zOK){o.z=z;moved=true;}
+ }
+ if(moved){drawScene();drawOverlay();}
+}
+function updateCursor(e){
+ if(drag)return;
+ const p=pointerPos(e);
+ stage.style.cursor=(hitPoint(p.x,p.y,start)||hitPoint(p.x,p.y,end)||pickObject(p.x,p.y)>=0)?'grab':'crosshair';
+}
+function onPointerDown(e){
+ if(e.button!==undefined&&e.button!==0)return;
+ const p=pointerPos(e),objectIndex=pickObject(p.x,p.y);
+ if(hitPoint(p.x,p.y,start))drag={kind:'start'};
+ else if(hitPoint(p.x,p.y,end))drag={kind:'end'};
+ else if(objectIndex>=0){const o=objects[objectIndex];drag={kind:'object',i:objectIndex,px:p.x,py:p.y,x:o.x,z:o.z};}
+ else{
+  // Empty-space taps continue to move the nearer endpoint, as before.
+  const v=worldToPx(start.x,start.z,heightAt(start.x,start.z));
+  const w=worldToPx(end.x,end.z,heightAt(end.x,end.z));
+  drag={kind:Math.hypot(p.x-v.x,p.y-v.y)<Math.hypot(p.x-w.x,p.y-w.y)?'start':'end'};
+ }
+ computeQuiet();
+ stage.setPointerCapture(e.pointerId);stage.style.cursor='grabbing';onPointerMove(e);
+}
+function onPointerMove(e){
+ if(!drag){updateCursor(e);return}
+ const p=pointerPos(e);
+ if(drag.kind==='object'){
+  const dx=(p.x-drag.px)/H*renderScale;
+  const dz=(p.y-drag.py)/H*renderScale*SLOPE;
+  // Incremental dragging avoids sudden jumps after a solid stops at a collision.
+  drag.px=p.x;drag.py=p.y;
+  moveObject(drag.i,objects[drag.i].x+dx,objects[drag.i].z+dz);
+ }else{
+  const safe=nearestValid(pxToWorld(p.x,p.y));
+  if(drag.kind==='start')start=safe;else end=safe;
+  drawOverlay();
+ }
+}
+function onPointerUp(e){
+ if(!drag)return;
+ drag=null;stage.style.cursor='grab';
+ if(stage.hasPointerCapture(e.pointerId))stage.releasePointerCapture(e.pointerId);
+ computeQuiet();
+}
+let keyboardTarget=0;
+stage.addEventListener('keydown',e=>{
+ if(/^[1-6]$/.test(e.key)){keyboardTarget=Number(e.key)-1;STATE.parentElement.hidden=false;STATE.textContent='Selected '+['start dot','goal dot','sphere','cube','block','cone'][keyboardTarget];return;}
+ const deltas={ArrowLeft:[-.12,0],ArrowRight:[.12,0],ArrowUp:[0,-.12],ArrowDown:[0,.12]};
+ if(!deltas[e.key])return;e.preventDefault();computeQuiet();
+ const [dx,dz]=deltas[e.key];
+ if(keyboardTarget<2){const p=keyboardTarget===0?start:end,q=nearestValid({x:p.x+dx,z:p.z+dz});if(keyboardTarget===0)start=q;else end=q;drawOverlay();}
+ else{const i=keyboardTarget-2;moveObject(i,objects[i].x+dx,objects[i].z+dz);}
+});
+stage.addEventListener('pointerdown',onPointerDown);
+stage.addEventListener('pointermove',onPointerMove);
+stage.addEventListener('pointerup',onPointerUp);
+stage.addEventListener('pointercancel',onPointerUp);
+const resetMenu=document.getElementById('resetMenu');
+resetMenu.addEventListener('click',e=>{
+ const btn=e.target.closest('[data-reset]');if(!btn)return;
+ const option=btn.dataset.reset;
+ if(option==='objects'||option==='all')objects.forEach((o,i)=>Object.assign(o,originalObjects[i]));
+ if(option==='endpoints'||option==='all'){start={...defaultStart};end={...defaultEnd};}
+ computeQuiet();drawScene();resetMenu.open=false;
+});
+document.addEventListener('pointerdown',e=>{if(resetMenu.open&&!resetMenu.contains(e.target))resetMenu.open=false});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')resetMenu.open=false});
+document.getElementById('run').addEventListener('click',resetRace);
+
+createGL();render.addEventListener('webglcontextlost',(event)=>{event.preventDefault();glOK=false;if(gl){try{gl.getExtension('WEBGL_lose_context')}catch(_){} }resize();},false);window.addEventListener('resize',()=>{resize();if(raceRunning){clearTrails()}});if('ResizeObserver' in window)new ResizeObserver(resize).observe(stage);resize();computeQuiet();
+// Expose read-only diagnostics for functional smoke tests; no application dependencies.
+window.pathRaceDiagnostics=()=>({running:raceRunning,elapsed:raceElapsed,playback:'automatic',provisional:raceRunning?leadingRoute()?.id||null:null,wasRaced,winner:leader?.id||null,start:{...start},end:{...end},scores:solvers.map(s=>({id:s.id,done:s.done,expanded:s.expanded,cost:s.route?.cost??null,points:s.route?.points.length??0})),webgl:glOK,objects:objects.map(o=>({...o})),overlapPairs:objects.flatMap((o,i)=>objects.slice(i+1).map((other,j)=>overlapsObjects(o,other)?[i,i+j+1]:null).filter(Boolean)),climbing:true,occluded:{start:isOccluded(surfacePoint(start.x,start.z)),goal:isOccluded(surfacePoint(end.x,end.z))}});
+// All links without known user-specific destinations are intentionally labeled as concept links.
+
+})();
+</script></body></html>
